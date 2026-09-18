@@ -1,0 +1,29 @@
+<main class="auth-shell" *ngIf="auth.session$ | async as session; else loginPanel">
+  <header class="topbar">
+    <div>
+      <strong>Bank Platform</strong>
+      <span>{{ session.username }} · {{ session.roles.join(', ') || 'authorized' }}</span>
+    </div>
+    <button type="button" (click)="logout()">Logout</button>
+  </header>
+  <router-outlet />
+</main>
+
+<ng-template #loginPanel>
+  <main class="login-shell">
+    <section class="login-copy">
+      <p class="eyebrow">SECURE BANKING MVP</p>
+      <h1>Bankkonto-Verwaltung mit Rollen und Audit</h1>
+      <p>Demo-Zugänge: employee / employee123, customer / customer123, admin / admin123.</p>
+    </section>
+
+    <form class="login-panel" [formGroup]="loginForm" (ngSubmit)="login()">
+      <p class="eyebrow">LOGIN</p>
+      <h2>Zugang öffnen</h2>
+      <label>Benutzer<input formControlName="username" autocomplete="username" /></label>
+      <label>Passwort<input type="password" formControlName="password" autocomplete="current-password" /></label>
+      <button type="submit" [disabled]="loading">{{ loading ? 'Prüfe Zugang ...' : 'Einloggen' }}</button>
+      <p class="feedback" *ngIf="feedback">{{ feedback }}</p>
+    </form>
+  </main>
+</ng-template>

@@ -1,0 +1,32 @@
+services:
+  - type: web
+    name: bank-platform-backend
+    env: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /actuator/health
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: postgres
+      - key: SPRING_DATASOURCE_URL
+        sync: false
+      - key: SPRING_DATASOURCE_USERNAME
+        sync: false
+      - key: SPRING_DATASOURCE_PASSWORD
+        sync: false
+
+  - type: web
+    name: bank-platform-frontend
+    env: docker
+    plan: free
+    rootDir: frontend
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: BACKEND_URL
+        sync: false
+
+databases:
+  - name: bank-platform-db
+    databaseName: bank_platform
+    user: bank
+    plan: free

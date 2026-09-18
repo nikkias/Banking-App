@@ -1,0 +1,85 @@
+<main class="workspace">
+  <header class="hero">
+    <div>
+      <p class="eyebrow">BANKING OPERATIONS</p>
+      <h1>Kontenübersicht</h1>
+      <p class="subtitle">Kunden, Konten und tägliche Geldbewegungen an einem Ort.</p>
+    </div>
+    <div class="status"><span></span> API verbunden</div>
+  </header>
+
+  <section class="content-grid">
+    <article class="panel accounts-panel">
+      <div class="panel-heading">
+        <div>
+          <p class="eyebrow">PORTFOLIO</p>
+          <h2>Aktive Konten</h2>
+        </div>
+        <span class="panel-mark">€</span>
+      </div>
+
+      <ng-container *ngIf="accounts$ | async as accounts">
+        <div class="summary-row">
+          <div><span>Anzahl</span><strong>{{ accounts.length }}</strong></div>
+          <div><span>Gesamtvolumen</span><strong>{{ accountsTotal(accounts) | currency:'EUR' }}</strong></div>
+        </div>
+        <div class="account-list" *ngIf="accounts.length; else emptyState">
+          <a class="account-item" *ngFor="let account of accounts" [routerLink]="['/accounts', account.id]">
+            <div class="account-symbol">↗</div>
+            <div class="account-details"><strong>{{ account.iban }}</strong><span>{{ account.id }}</span></div>
+            <strong class="balance">{{ account.balance | currency:'EUR' }}</strong>
+          </a>
+        </div>
+
+        <form class="transaction-form" [formGroup]="transactionForm" (ngSubmit)="submitTransaction()" *ngIf="accounts.length">
+          <select formControlName="accountId" aria-label="Konto auswählen">
+            <option value="">Konto auswählen</option>
+            <option *ngFor="let account of accounts" [value]="account.id">{{ account.iban }}</option>
+          </select>
+          <select formControlName="type" aria-label="Buchungsart">
+            <option value="deposit">Einzahlung</option>
+            <option value="withdraw">Auszahlung</option>
+          </select>
+          <input type="number" formControlName="amount" min="0.01" step="0.01" placeholder="Betrag" />
+          <input formControlName="description" placeholder="Beschreibung" />
+          <button type="submit" [disabled]="transactionLoading">Buchen</button>
+        </form>
+      </ng-container>
+      <ng-template #emptyState><p class="empty">Noch keine Konten vorhanden.</p></ng-template>
+    </article>
+
+    <article class="panel form-panel">
+      <p class="eyebrow">NEUES KONTO</p>
+      <h2>Konto eröffnen</h2>
+      <p class="form-intro">Lege einen Kunden an und eröffne direkt sein erstes Konto.</p>
+      <form [formGroup]="accountForm" (ngSubmit)="submit()">
+        <label>Vorname<input formControlName="firstName" placeholder="Anna" /></label>
+        <label>Nachname<input formControlName="lastName" placeholder="Muster" /></label>
+        <label>Besitzer-Login<input formControlName="ownerUsername" placeholder="customer" /></label>
+        <label>Startguthaben<input type="number" formControlName="openingBalance" min="0" step="0.01" /></label>
+        <button type="submit" [disabled]="loading">{{ loading ? 'Wird angelegt ...' : 'Konto eröffnen' }}</button>
+      </form>
+      <p class="feedback" *ngIf="feedback">{{ feedback }}</p>
+    </article>
+  </section>
+
+  <section class="panel audit-panel" *ngIf="auth.session$ | async as session">
+    <ng-container *ngIf="session.roles.includes('ADMIN')">
+      <div class="panel-heading">
+        <div>
+          <p class="eyebrow">ADMIN AUDIT</p>
+          <h2>Audit-Log</h2>
+        </div>
+      </div>
+      <ng-container *ngIf="auditEvents$ | async as events">
+        <div class="audit-list" *ngIf="events.length; else emptyAudit">
+          <div class="audit-item" *ngFor="let event of events">
+            <div><strong>{{ event.action }}</strong><span>{{ event.actor }} · {{ event.resourceType }} · {{ event.resourceId }}</span></div>
+            <span>{{ event.outcome }}</span>
+          </div>
+        </div>
+      </ng-container>
+      <ng-template #emptyAudit><p class="empty">Noch keine Audit-Events vorhanden.</p></ng-template>
+    </ng-container>
+  </section>
+</main>

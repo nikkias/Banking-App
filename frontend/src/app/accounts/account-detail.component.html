@@ -1,0 +1,66 @@
+<main class="detail-shell" *ngIf="account$ | async as account; else notFound">
+  <a class="back-link" routerLink="/">← Zur Übersicht</a>
+
+  <section class="account-hero">
+    <div>
+      <p class="eyebrow">KONTODETAILS</p>
+      <h1>{{ account.iban }}</h1>
+      <p>Kunde {{ account.customerId }}</p>
+    </div>
+    <strong>{{ account.balance | currency:'EUR' }}</strong>
+  </section>
+
+  <section class="detail-grid">
+    <article class="panel transfer-panel">
+      <p class="eyebrow">ÜBERWEISUNG</p>
+      <h2>Geld senden</h2>
+      <form [formGroup]="transferForm" (ngSubmit)="submitTransfer(account.id)">
+        <ng-container *ngIf="accounts$ | async as accounts">
+          <label>Zielkonto
+            <select formControlName="targetAccountId">
+              <option value="">Zielkonto auswählen</option>
+              <option *ngFor="let target of accounts" [value]="target.id" [disabled]="target.id === account.id">
+                {{ target.iban }} - {{ target.balance | currency:'EUR' }}
+              </option>
+            </select>
+          </label>
+        </ng-container>
+        <label>Betrag<input type="number" formControlName="amount" min="0.01" step="0.01" /></label>
+        <label>Beschreibung<input formControlName="description" placeholder="Miete, Rechnung, Umbuchung" /></label>
+        <button type="submit" [disabled]="loading">{{ loading ? 'Wird gesendet ...' : 'Überweisung ausführen' }}</button>
+      </form>
+      <p class="feedback" *ngIf="feedback">{{ feedback }}</p>
+    </article>
+
+    <article class="panel history-panel">
+      <div class="panel-heading">
+        <div>
+          <p class="eyebrow">HISTORIE</p>
+          <h2>Transaktionen</h2>
+        </div>
+      </div>
+
+      <ng-container *ngIf="transactions$ | async as transactions">
+        <div class="transaction-list" *ngIf="transactions.length; else emptyHistory">
+          <div class="transaction-item" *ngFor="let transaction of transactions">
+            <div>
+              <strong>{{ transaction.description }}</strong>
+              <span>{{ transaction.type }} · {{ transaction.timestamp | date:'dd.MM.yyyy HH:mm' }}</span>
+            </div>
+            <strong [class.positive]="transaction.type === 'DEPOSIT' || transaction.type === 'TRANSFER_IN'">
+              {{ transaction.amount | currency:'EUR' }}
+            </strong>
+          </div>
+        </div>
+      </ng-container>
+      <ng-template #emptyHistory><p class="empty">Noch keine Transaktionen vorhanden.</p></ng-template>
+    </article>
+  </section>
+</main>
+
+<ng-template #notFound>
+  <main class="detail-shell">
+    <a class="back-link" routerLink="/">← Zur Übersicht</a>
+    <section class="panel"><h1>Konto nicht gefunden</h1><p class="empty">Das Konto existiert nicht oder die API ist nicht erreichbar.</p></section>
+  </main>
+</ng-template>

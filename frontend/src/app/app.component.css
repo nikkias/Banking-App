@@ -1,0 +1,10 @@
+:host { display: block; min-height: 100vh; }
+.auth-shell { min-height: 100vh; }
+.topbar { position: sticky; top: 0; z-index: 10; display: flex; justify-content: space-between; align-items: center; gap: 18px; padding: 14px 28px; border-bottom: 1px solid #243f3d; background: rgba(7, 23, 22, .92); backdrop-filter: blur(14px); }
+.topbar div { display: grid; gap: 3px; } .topbar strong { color: #f4f6ef; } .topbar span { color: #91a5a1; font-size: 12px; } .topbar button { padding: 10px 14px; border: 1px solid #405956; border-radius: 4px; background: #102625; color: #f4f6ef; font-weight: 800; cursor: pointer; }
+.login-shell { min-height: 100vh; display: grid; grid-template-columns: minmax(0, 1fr) minmax(320px, 420px); gap: 28px; align-items: center; max-width: 1120px; margin: 0 auto; padding: 44px 28px; }
+.login-copy h1 { max-width: 680px; margin: 0 0 18px; color: #f4f6ef; font-size: clamp(40px, 7vw, 78px); line-height: .95; } .login-copy p { color: #91a5a1; line-height: 1.6; }
+.eyebrow { margin: 0 0 10px; color: #b7d5cc; font-size: 11px; font-weight: 900; letter-spacing: 2px; }
+.login-panel { display: grid; gap: 16px; padding: 28px; border: 1px solid #2b4645; border-radius: 8px; background: #d5e86d; color: #102625; box-shadow: 0 24px 80px rgba(4, 16, 15, .32); } .login-panel .eyebrow, .login-panel h2 { color: #102625; } .login-panel h2 { margin: 0 0 8px; }
+label { display: grid; gap: 7px; color: #314b43; font-size: 13px; font-weight: 800; } input { width: 100%; padding: 13px 14px; border: 1px solid #a9be50; border-radius: 4px; background: #e8f29a; color: #102625; font: inherit; } .login-panel button { padding: 14px; border: 0; border-radius: 4px; background: #102625; color: #eff6d4; font: inherit; font-weight: 900; cursor: pointer; } button:disabled { opacity: .55; cursor: wait; } .feedback { margin: 0; color: #6f2b22; font-weight: 800; }
+@media (max-width: 780px) { .login-shell { grid-template-columns: 1fr; align-items: start; } .topbar { align-items: start; flex-direction: column; } }
