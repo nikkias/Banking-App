@@ -4,7 +4,6 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { BehaviorSubject, catchError, finalize, of, switchMap, tap } from 'rxjs';
 import { AccountService } from './account.service';
-import { AuthService } from '../core/auth/auth.service';
 
 @Component({
   selector: 'app-account-list',
@@ -17,7 +16,6 @@ export class AccountListComponent {
   private readonly formBuilder = inject(FormBuilder);
   private readonly accountService = inject(AccountService);
   private readonly refreshAccounts = new BehaviorSubject<void>(undefined);
-  readonly auth = inject(AuthService);
 
   readonly accountForm = this.formBuilder.nonNullable.group({
     firstName: ['', [Validators.required]],
@@ -35,10 +33,6 @@ export class AccountListComponent {
 
   readonly accounts$ = this.refreshAccounts.pipe(
     switchMap(() => this.accountService.getAccounts().pipe(catchError(() => of([]))))
-  );
-
-  readonly auditEvents$ = this.refreshAccounts.pipe(
-    switchMap(() => this.accountService.getAuditEvents().pipe(catchError(() => of([]))))
   );
 
   loading = false;

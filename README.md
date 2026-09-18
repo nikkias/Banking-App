@@ -18,6 +18,9 @@ Eine moderne Bankkonto-Verwaltung für Privatkunden und Bankmitarbeiter: Konten 
 - Einheitliche Fehlerantworten mit `ProblemDetail`
 - Spring Security mit Demo-Rollen `CUSTOMER`, `EMPLOYEE`, `ADMIN`
 - Audit-Log für Kunden-, Konto- und Geldbewegungen
+- Automatische Demo-Daten im lokalen `memory`-Profil
+- OpenAPI/Swagger für professionelle API-Dokumentation
+- Eigene Admin-Audit-Seite im Frontend
 - Java-Service-Tests für zentrale Fachregeln
 
 ## Projektstruktur
@@ -72,6 +75,7 @@ URLs:
 ```text
 Backend:  http://localhost:8080
 Frontend: http://localhost:4200
+Swagger:  http://localhost:8080/swagger-ui/index.html
 ```
 
 Das Standardprofil ist `memory`, damit die App ohne Datenbank sofort startet. Für dauerhafte Daten nutze das Profil `postgres`.
@@ -96,6 +100,7 @@ Für lokale Demos nutzt die App Basic Auth. Für produktionsnahe Umgebungen ist 
 - [Engineering Playbook](docs/ENGINEERING_PLAYBOOK.md)
 - [Quality and Test Strategy](docs/QUALITY_AND_TEST_STRATEGY.md)
 - [Investor Demo Plan](docs/INVESTOR_DEMO_PLAN.md)
+- [Enterprise Showcase](docs/ENTERPRISE_SHOWCASE.md)
 - [Technical Decisions](docs/TECHNICAL_DECISIONS.md)
 - [24/7 Deployment Plan](docs/DEPLOYMENT_24_7_PLAN.md)
 - [Public Link Setup](docs/PUBLIC_LINK_SETUP.md)

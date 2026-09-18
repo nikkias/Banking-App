@@ -16,12 +16,13 @@
 | F-010 | Audit Log | Admin/Compliance | P0 | Implementiert | Jede wichtige Aktion erzeugt Audit-Eintrag |
 | F-011 | Login | Alle | P0 | Implementiert | Nutzer meldet sich an und erhält Rolle |
 | F-012 | Rollenprüfung | System | P0 | Implementiert | Kunden sehen nur eigene Konten |
-| F-013 | OpenAPI | Entwickler | P1 | Offen | Swagger UI zeigt alle Endpunkte |
+| F-013 | OpenAPI | Entwickler | P1 | Implementiert | Swagger UI zeigt alle Endpunkte |
 | F-014 | Docker Compose | Entwickler | P1 | Offen | Stack startet mit einem Befehl |
 | F-015 | Demo Seed Data | Investor/Reviewer | P1 | Offen | Demo enthält realistische Startdaten |
 | F-016 | CSV Export | Kunde/Mitarbeiter | P2 | Offen | Transaktionen können exportiert werden |
 | F-017 | Limits | Kunde/Mitarbeiter | P2 | Offen | Tageslimit verhindert zu hohe Abgänge |
 | F-018 | Notifications | Kunde | P3 | Offen | Nutzer sieht Buchungsbenachrichtigungen |
+| F-019 | Admin Audit Center | Admin/Compliance | P0 | Implementiert | Audit-Events sind in eigener Admin-Seite sichtbar |
 
 ## MVP User Journeys
 

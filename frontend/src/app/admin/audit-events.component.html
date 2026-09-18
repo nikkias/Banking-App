@@ -1,0 +1,44 @@
+<main class="audit-shell">
+  <a class="back-link" routerLink="/">← Zur Übersicht</a>
+
+  <header class="audit-hero">
+    <div>
+      <p class="eyebrow">ADMIN COMMAND CENTER</p>
+      <h1>Audit & Governance</h1>
+      <p>Alle kritischen Konto- und Kundenaktionen werden nachvollziehbar als Operations-Trail sichtbar.</p>
+    </div>
+    <aside>
+      <span>Controls</span>
+      <strong>RBAC + Audit</strong>
+      <em>Investor demo ready</em>
+    </aside>
+  </header>
+
+  <ng-container *ngIf="events$ | async as events">
+    <section class="kpi-row">
+      <article><span>Events</span><strong>{{ events.length }}</strong></article>
+      <article><span>Outcome</span><strong>SUCCESS</strong></article>
+      <article><span>Scope</span><strong>Banking</strong></article>
+    </section>
+
+    <section class="audit-list" *ngIf="events.length; else emptyAudit">
+      <article class="audit-item" *ngFor="let event of events" [class]="eventTone(event.action)">
+        <div class="event-icon">{{ event.action.charAt(0) }}</div>
+        <div class="event-main">
+          <div class="event-heading"><strong>{{ event.action }}</strong><span>{{ event.outcome }}</span></div>
+          <p>{{ event.description }}</p>
+          <small>{{ event.actor }} · {{ event.resourceType }} · {{ event.resourceId }}</small>
+        </div>
+        <div class="event-side">
+          <strong *ngIf="event.amount !== null; else noAmount">{{ event.amount | currency:'EUR' }}</strong>
+          <ng-template #noAmount><strong>Governance</strong></ng-template>
+          <span>{{ event.timestamp | date:'dd.MM.yyyy HH:mm' }}</span>
+        </div>
+      </article>
+    </section>
+  </ng-container>
+
+  <ng-template #emptyAudit>
+    <section class="empty-panel"><h2>Noch keine Audit-Events</h2><p>Führe Kontoaktionen aus und lade diese Seite erneut.</p></section>
+  </ng-template>
+</main>

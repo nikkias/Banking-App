@@ -1,13 +1,14 @@
 <main class="workspace">
   <header class="hero">
     <div>
-      <p class="eyebrow">BANK24 OPERATIONS CENTER</p>
-      <h1>Digitales Konto-Cockpit</h1>
-      <p class="subtitle">Konten eröffnen, Geld bewegen und Audit-Spuren live nachvollziehen.</p>
+      <p class="eyebrow">BANK24 ENTERPRISE OPERATIONS</p>
+      <h1>Financial Services Cockpit</h1>
+      <p class="subtitle">Konten, Kundensegmente, Audit-Spuren und Serviceprozesse in einer integrationsfähigen Demo-Plattform.</p>
       <div class="hero-metrics">
         <span>24/7 verfügbar</span>
         <span>Rollen geschützt</span>
         <span>Audit aktiv</span>
+        <span>Customer Journey</span>
       </div>
     </div>
     <aside class="bank-card" aria-label="Bank24 Secure Card">
@@ -17,6 +18,13 @@
       <div class="card-bottom"><span>SECURE CHIP</span><strong>24/7</strong></div>
     </aside>
   </header>
+
+  <section class="capability-grid" aria-label="Enterprise capabilities">
+    <article><span>01</span><strong>Banking</strong><p>Kontoführung, Buchungen, Salden, Transaktionshistorie.</p></article>
+    <article><span>02</span><strong>Versicherung</strong><p>TAA-Denken, Antrag, Vertrag, Schaden und Serviceprozesse als nächste Domäne.</p></article>
+    <article><span>03</span><strong>Public Sector</strong><p>Nachvollziehbare Rollen, Audit, Reporting und klare Betriebsprozesse.</p></article>
+    <article><span>04</span><strong>PMO & KPI</strong><p>Roadmap, Qualitätsgates, Demo-Flow und Kennzahlenmodell.</p></article>
+  </section>
 
   <section class="content-grid">
     <article class="panel accounts-panel">
@@ -71,25 +79,5 @@
       </form>
       <p class="feedback" *ngIf="feedback">{{ feedback }}</p>
     </article>
-  </section>
-
-  <section class="panel audit-panel" *ngIf="auth.session$ | async as session">
-    <ng-container *ngIf="session.roles.includes('ADMIN')">
-      <div class="panel-heading">
-        <div>
-          <p class="eyebrow">ADMIN AUDIT</p>
-          <h2>Audit-Log</h2>
-        </div>
-      </div>
-      <ng-container *ngIf="auditEvents$ | async as events">
-        <div class="audit-list" *ngIf="events.length; else emptyAudit">
-          <div class="audit-item" *ngFor="let event of events">
-            <div><strong>{{ event.action }}</strong><span>{{ event.actor }} · {{ event.resourceType }} · {{ event.resourceId }}</span></div>
-            <span>{{ event.outcome }}</span>
-          </div>
-        </div>
-      </ng-container>
-      <ng-template #emptyAudit><p class="empty">Noch keine Audit-Events vorhanden.</p></ng-template>
-    </ng-container>
   </section>
 </main>
