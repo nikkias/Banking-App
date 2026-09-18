@@ -3,17 +3,22 @@
 
   <section class="account-hero">
     <div>
-      <p class="eyebrow">KONTODETAILS</p>
+      <p class="eyebrow">BANK24 KONTODETAILS</p>
       <h1>{{ account.iban }}</h1>
       <p>Kunde {{ account.customerId }}</p>
     </div>
-    <strong>{{ account.balance | currency:'EUR' }}</strong>
+    <div class="balance-card">
+      <span>Verfügbarer Saldo</span>
+      <strong>{{ account.balance | currency:'EUR' }}</strong>
+      <em>Secure chip account</em>
+    </div>
   </section>
 
   <section class="detail-grid">
     <article class="panel transfer-panel">
       <p class="eyebrow">ÜBERWEISUNG</p>
       <h2>Geld senden</h2>
+      <p class="hint">Ausgehende Buchungen werden sofort auditiert und in der Historie sichtbar.</p>
       <form [formGroup]="transferForm" (ngSubmit)="submitTransfer(account.id)">
         <ng-container *ngIf="accounts$ | async as accounts">
           <label>Zielkonto
@@ -43,6 +48,7 @@
       <ng-container *ngIf="transactions$ | async as transactions">
         <div class="transaction-list" *ngIf="transactions.length; else emptyHistory">
           <div class="transaction-item" *ngFor="let transaction of transactions">
+            <span class="transaction-badge">{{ transaction.type === 'DEPOSIT' || transaction.type === 'TRANSFER_IN' ? '+' : '-' }}</span>
             <div>
               <strong>{{ transaction.description }}</strong>
               <span>{{ transaction.type }} · {{ transaction.timestamp | date:'dd.MM.yyyy HH:mm' }}</span>

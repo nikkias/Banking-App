@@ -1,8 +1,8 @@
 <main class="auth-shell" *ngIf="auth.session$ | async as session; else loginPanel">
   <header class="topbar">
     <div>
-      <strong>Bank Platform</strong>
-      <span>{{ session.username }} · {{ session.roles.join(', ') || 'authorized' }}</span>
+      <strong>Bank24</strong>
+      <span>{{ session.username }} · {{ session.roles.join(', ') || 'authorized' }} · 24/7 Online</span>
     </div>
     <button type="button" (click)="logout()">Logout</button>
   </header>
@@ -12,12 +12,14 @@
 <ng-template #loginPanel>
   <main class="login-shell">
     <section class="login-copy">
-      <p class="eyebrow">SECURE BANKING MVP</p>
-      <h1>Bankkonto-Verwaltung mit Rollen und Audit</h1>
+      <p class="eyebrow">BANK24 SECURE ONLINE</p>
+      <h1>Modernes Banking für Konten, Rollen und Audit</h1>
       <p>Demo-Zugänge: employee / employee123, customer / customer123, admin / admin123.</p>
+      <div class="trust-row"><span>24/7</span><span>Audit-ready</span><span>Role-based</span></div>
     </section>
 
     <form class="login-panel" [formGroup]="loginForm" (ngSubmit)="login()">
+      <div class="card-preview" aria-hidden="true"><span></span><strong>Bank24</strong><em>SECURE CHIP</em></div>
       <p class="eyebrow">LOGIN</p>
       <h2>Zugang öffnen</h2>
       <label>Benutzer<input formControlName="username" autocomplete="username" /></label>

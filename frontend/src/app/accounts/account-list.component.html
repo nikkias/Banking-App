@@ -1,11 +1,21 @@
 <main class="workspace">
   <header class="hero">
     <div>
-      <p class="eyebrow">BANKING OPERATIONS</p>
-      <h1>Kontenübersicht</h1>
-      <p class="subtitle">Kunden, Konten und tägliche Geldbewegungen an einem Ort.</p>
+      <p class="eyebrow">BANK24 OPERATIONS CENTER</p>
+      <h1>Digitales Konto-Cockpit</h1>
+      <p class="subtitle">Konten eröffnen, Geld bewegen und Audit-Spuren live nachvollziehen.</p>
+      <div class="hero-metrics">
+        <span>24/7 verfügbar</span>
+        <span>Rollen geschützt</span>
+        <span>Audit aktiv</span>
+      </div>
     </div>
-    <div class="status"><span></span> API verbunden</div>
+    <aside class="bank-card" aria-label="Bank24 Secure Card">
+      <div class="card-top"><strong>Bank24</strong><span>ONLINE</span></div>
+      <div class="chip"><i></i><i></i><i></i><i></i></div>
+      <p>DEMO 2026</p>
+      <div class="card-bottom"><span>SECURE CHIP</span><strong>24/7</strong></div>
+    </aside>
   </header>
 
   <section class="content-grid">
@@ -15,7 +25,7 @@
           <p class="eyebrow">PORTFOLIO</p>
           <h2>Aktive Konten</h2>
         </div>
-        <span class="panel-mark">€</span>
+        <span class="status"><i></i> Live</span>
       </div>
 
       <ng-container *ngIf="accounts$ | async as accounts">
@@ -25,8 +35,8 @@
         </div>
         <div class="account-list" *ngIf="accounts.length; else emptyState">
           <a class="account-item" *ngFor="let account of accounts" [routerLink]="['/accounts', account.id]">
-            <div class="account-symbol">↗</div>
-            <div class="account-details"><strong>{{ account.iban }}</strong><span>{{ account.id }}</span></div>
+            <div class="account-symbol">€</div>
+            <div class="account-details"><strong>{{ account.iban }}</strong><span>Konto-ID {{ account.id }}</span></div>
             <strong class="balance">{{ account.balance | currency:'EUR' }}</strong>
           </a>
         </div>
