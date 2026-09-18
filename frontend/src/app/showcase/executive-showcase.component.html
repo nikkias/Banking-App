@@ -1,0 +1,49 @@
+<main class="showcase-shell">
+  <section class="showcase-hero">
+    <div>
+      <p class="eyebrow">EXECUTIVE SHOWCASE</p>
+      <h1>Bank24 zeigt Financial Services Delivery auf Produktniveau</h1>
+      <p>Eine kompakte Plattform-Demo für Banking, Versicherung, Public Sector und Systemintegration: sichtbar, auditierbar, cloud-ready.</p>
+      <div class="hero-actions">
+        <a routerLink="/">Live Cockpit</a>
+        <a routerLink="/admin/audit">Audit Center</a>
+      </div>
+    </div>
+    <aside class="score-card">
+      <span>Demo readiness</span>
+      <strong>92%</strong>
+      <p>Backend, Frontend, Security, Audit, OpenAPI und Deployment-Pfad sind sichtbar.</p>
+    </aside>
+  </section>
+
+  <section class="capability-board">
+    <article *ngFor="let capability of capabilities">
+      <span></span>
+      <strong>{{ capability.label }}</strong>
+      <p>{{ capability.text }}</p>
+    </article>
+  </section>
+
+  <section class="proof-grid">
+    <article class="narrative-card">
+      <p class="eyebrow">PITCH LINE</p>
+      <h2>Von Azubi-Projekt zu Enterprise-MVP</h2>
+      <p>Bank24 verbindet Produktdenken, Scrum/PMO-Struktur, Systemintegration und Financial-Services-Domäne in einer lauffähigen Fullstack-Demo.</p>
+    </article>
+
+    <article class="proof-card">
+      <p class="eyebrow">PROOF POINTS</p>
+      <div class="proof-list">
+        <span *ngFor="let proof of proofPoints">{{ proof }}</span>
+      </div>
+    </article>
+  </section>
+
+  <section class="journey-strip">
+    <div><strong>01</strong><span>Login mit Rolle</span></div>
+    <div><strong>02</strong><span>Konto eröffnen</span></div>
+    <div><strong>03</strong><span>Geld bewegen</span></div>
+    <div><strong>04</strong><span>Audit prüfen</span></div>
+    <div><strong>05</strong><span>API erklären</span></div>
+  </section>
+</main>

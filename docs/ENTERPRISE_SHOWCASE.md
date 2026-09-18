@@ -33,6 +33,7 @@ PMO / Product
 - Demo-Flow für Mitarbeiter, Kunde und Admin
 - automatische Demo-Daten für eine sofort gefüllte Präsentationsoberfläche
 - eigene Admin-Audit-Seite für Governance und Kontrollnachweis
+- Executive Showcase Route im Frontend für Pitch und Management-Demo
 - Swagger/OpenAPI für Systemintegration und technische Reviews
 - anschlussfähig an Banking, Versicherung und öffentliche Verwaltung
 
