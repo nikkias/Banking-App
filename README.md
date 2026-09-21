@@ -8,7 +8,7 @@ Eine moderne Bankkonto-Verwaltung für Privatkunden und Bankmitarbeiter: Konten 
 
 ## Aktueller Stand
 
-- Spring Boot 3.5 Backend mit Java 21
+- Spring Boot 3.5 Backend mit Java 25 LTS
 - Angular 18 Frontend
 - Modulare Backend-Architektur mit Ports und Adaptern
 - In-Memory-Infrastruktur für schnelle MVP-Entwicklung

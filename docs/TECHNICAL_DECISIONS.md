@@ -47,20 +47,19 @@ Consequence:
 - API-Verträge müssen stabil bleiben.
 - CORS und Environment-Konfiguration sind Pflicht.
 
-## TD-004 Java 21
+## TD-004 Java 25
 
-Decision: Java 21 statt Java 25.
+Decision: Java 25 als aktuelles LTS-Release.
 
 Reason:
 
-- lokal installiert
 - LTS
-- stabil mit Spring Boot
-- buildfähig ohne Release-Fehler
+- aktuelles LTS-Release zum Zeitpunkt der Entscheidung
+- kompatibel mit Spring Boot 3.5
 
 Consequence:
 
-- `pom.xml` nutzt `<java.version>21</java.version>`.
+- `pom.xml` nutzt `<java.version>25</java.version>`.
 
 ## TD-005 ProblemDetail for API Errors
 
