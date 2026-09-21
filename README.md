@@ -105,6 +105,7 @@ Für lokale Demos nutzt die App Basic Auth. Für produktionsnahe Umgebungen ist 
 - [24/7 Deployment Plan](docs/DEPLOYMENT_24_7_PLAN.md)
 - [Public Link Setup](docs/PUBLIC_LINK_SETUP.md)
 - [Render Launch Checklist](docs/RENDER_LAUNCH_CHECKLIST.md)
+- [GitHub Pages Setup](docs/GITHUB_PAGES_SETUP.md)
 
 ## Deployment-Dateien
 
