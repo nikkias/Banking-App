@@ -4,17 +4,20 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { finalize } from 'rxjs';
 import { AuthService } from './core/auth/auth.service';
+import { ExecutiveShowcaseComponent } from './showcase/executive-showcase.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [AsyncPipe, NgIf, ReactiveFormsModule, RouterLink, RouterOutlet],
+  imports: [AsyncPipe, ExecutiveShowcaseComponent, NgIf, ReactiveFormsModule, RouterLink, RouterOutlet],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {
   readonly auth = inject(AuthService);
   private readonly formBuilder = inject(FormBuilder);
+  readonly isPublicShowcase = window.location.pathname.endsWith('/showcase');
+  readonly isStaticPages = window.location.hostname.endsWith('github.io');
 
   readonly loginForm = this.formBuilder.nonNullable.group({
     username: ['employee', [Validators.required]],

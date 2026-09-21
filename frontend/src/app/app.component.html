@@ -1,19 +1,31 @@
-<main class="auth-shell" *ngIf="auth.session$ | async as session; else loginPanel">
-  <header class="topbar">
-    <div>
-      <strong>Bank24</strong>
-      <span>{{ session.username }} · {{ session.roles.join(', ') || 'authorized' }} · 24/7 Online</span>
-    </div>
-    <nav>
-      <a routerLink="/">Cockpit</a>
-      <a routerLink="/showcase">Showcase</a>
-      <a routerLink="/admin/audit" *ngIf="session.roles.includes('ADMIN')">Audit</a>
-      <a href="http://localhost:8080/swagger-ui/index.html" target="_blank" rel="noreferrer">API</a>
-    </nav>
-    <button type="button" (click)="logout()">Logout</button>
-  </header>
-  <router-outlet />
-</main>
+<ng-container *ngIf="isStaticPages; else runtimeApp">
+  <app-executive-showcase />
+</ng-container>
+
+<ng-template #runtimeApp>
+  <ng-container *ngIf="isPublicShowcase; else protectedApp">
+    <router-outlet />
+  </ng-container>
+</ng-template>
+
+<ng-template #protectedApp>
+  <main class="auth-shell" *ngIf="auth.session$ | async as session; else loginPanel">
+    <header class="topbar">
+      <div>
+        <strong>Bank24</strong>
+        <span>{{ session.username }} · {{ session.roles.join(', ') || 'authorized' }} · 24/7 Online</span>
+      </div>
+      <nav>
+        <a routerLink="/">Cockpit</a>
+        <a routerLink="/showcase">Showcase</a>
+        <a routerLink="/admin/audit" *ngIf="session.roles.includes('ADMIN')">Audit</a>
+        <a href="http://localhost:8080/swagger-ui/index.html" target="_blank" rel="noreferrer">API</a>
+      </nav>
+      <button type="button" (click)="logout()">Logout</button>
+    </header>
+    <router-outlet />
+  </main>
+</ng-template>
 
 <ng-template #loginPanel>
   <main class="login-shell">
