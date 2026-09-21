@@ -27,4 +27,15 @@ export class ExecutiveShowcaseComponent {
     'OpenAPI/Swagger',
     'Docker/Render ready'
   ];
+
+  readonly deliveryDisciplines = [
+    'Professional Scrum Master I',
+    'Professional Scrum Product Owner I',
+    'Customer Journey & Pain Point Analysis',
+    'Business- und Anforderungsanalyse',
+    'SAP Account Management & System Integration',
+    'BPMN, Prozessanalyse & Prozessoptimierung',
+    'PMO, Projektleitung & Qualitätsgates',
+    'KPI-, Reporting- und Stakeholder-Management'
+  ];
 }
