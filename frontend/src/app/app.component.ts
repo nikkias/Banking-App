@@ -17,7 +17,8 @@ export class AppComponent {
   readonly auth = inject(AuthService);
   private readonly formBuilder = inject(FormBuilder);
   readonly isPublicShowcase = window.location.pathname.endsWith('/showcase');
-  readonly isStaticPages = window.location.hostname.endsWith('github.io');
+  readonly isStaticPages = window.location.hostname.endsWith('github.io')
+    || window.location.pathname.startsWith('/Banking-App');
 
   readonly loginForm = this.formBuilder.nonNullable.group({
     username: ['employee', [Validators.required]],
