@@ -1,14 +1,22 @@
 import { Component } from '@angular/core';
+
 import { RouterLink } from '@angular/router';
 
 @Component({
-  selector: 'app-executive-showcase',
+    selector: 'app-executive-showcase',
   standalone: true,
-  imports: [RouterLink],
-  templateUrl: './executive-showcase.component.html',
-  styleUrl: './executive-showcase.component.css'
+    imports: [RouterLink],
+    templateUrl: './executive-showcase.component.html',
+    styleUrl: './executive-showcase.component.css'
 })
 export class ExecutiveShowcaseComponent {
+  readonly readinessPillars = [
+    { label: 'Produktkern', metric: 'P0', text: 'Kunden, Konten, Buchungen, Überweisungen und Historie sind als nutzbarer End-to-End-Flow umgesetzt.' },
+    { label: 'Trust Layer', metric: 'Audit', text: 'Rollen, Ownership-Prüfung, Admin-Audit und klare Fehlerantworten machen sensible Prozesse nachvollziehbar.' },
+    { label: 'Tech Proof', metric: 'API', text: 'Spring Boot, Ports-and-Adapters, OpenAPI, PostgreSQL-Profil, Flyway und Docker-Pfad zeigen Skalierbarkeit.' },
+    { label: 'Delivery Story', metric: 'MVP', text: 'Roadmap, Feature-Katalog, Qualitätsstrategie und Demo-Flow machen das Projekt präsentierbar und ausbaufähig.' }
+  ];
+
   readonly capabilities = [
     { label: 'Regional Banking', text: 'Kontoführung, Filialprozesse, Kundenrollen, Audit und Integrationsfähigkeit.' },
     { label: 'Comparison Platform', text: 'Kundenreise, Angebotsstrecken, Conversion-KPIs und Self-Service-Denken.' },
@@ -18,7 +26,7 @@ export class ExecutiveShowcaseComponent {
 
   readonly proofPoints = [
     'Spring Boot 3.5 + Java 21',
-    'Angular 18 Standalone UI',
+    'Angular 21 Standalone UI',
     'Ports-and-Adapters Architektur',
     'PostgreSQL/Flyway ready',
     'Spring Security + Rollen',

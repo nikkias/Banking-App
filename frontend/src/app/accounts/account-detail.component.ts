@@ -1,4 +1,4 @@
-import { AsyncPipe, CurrencyPipe, DatePipe, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe, CurrencyPipe, DatePipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
@@ -6,11 +6,11 @@ import { BehaviorSubject, catchError, combineLatest, finalize, map, of, shareRep
 import { AccountService } from './account.service';
 
 @Component({
-  selector: 'app-account-detail',
+    selector: 'app-account-detail',
   standalone: true,
-  imports: [AsyncPipe, CurrencyPipe, DatePipe, NgFor, NgIf, ReactiveFormsModule, RouterLink],
-  templateUrl: './account-detail.component.html',
-  styleUrl: './account-detail.component.css'
+    imports: [AsyncPipe, CurrencyPipe, DatePipe, ReactiveFormsModule, RouterLink],
+    templateUrl: './account-detail.component.html',
+    styleUrl: './account-detail.component.css'
 })
 export class AccountDetailComponent {
   private readonly route = inject(ActivatedRoute);

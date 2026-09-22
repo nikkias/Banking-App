@@ -8,8 +8,8 @@ Eine moderne Bankkonto-Verwaltung für Privatkunden und Bankmitarbeiter: Konten 
 
 ## Aktueller Stand
 
-- Spring Boot 3.5 Backend mit Java 25 LTS
-- Angular 18 Frontend
+- Spring Boot 3.5 Backend mit Java 21 LTS
+- Angular 21 Frontend
 - Modulare Backend-Architektur mit Ports und Adaptern
 - In-Memory-Infrastruktur für schnelle MVP-Entwicklung
 - PostgreSQL-/JPA-Adapter über Profil `postgres`
@@ -95,6 +95,7 @@ Für lokale Demos nutzt die App Basic Auth. Für produktionsnahe Umgebungen ist 
 ## Wichtigste Dokumente
 
 - [Architecture](ARCHITECTURE.md)
+- [Module Guide](docs/MODULE_GUIDE.md)
 - [Top-Tier MVP Plan](docs/TOP_TIER_MVP_PLAN.md)
 - [Feature Catalog](docs/FEATURE_CATALOG.md)
 - [Engineering Playbook](docs/ENGINEERING_PLAYBOOK.md)

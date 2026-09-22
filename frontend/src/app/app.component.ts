@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink, RouterOutlet } from '@angular/router';
@@ -7,11 +7,11 @@ import { AuthService } from './core/auth/auth.service';
 import { ExecutiveShowcaseComponent } from './showcase/executive-showcase.component';
 
 @Component({
-  selector: 'app-root',
+    selector: 'app-root',
   standalone: true,
-  imports: [AsyncPipe, ExecutiveShowcaseComponent, NgIf, ReactiveFormsModule, RouterLink, RouterOutlet],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+    imports: [AsyncPipe, ExecutiveShowcaseComponent, ReactiveFormsModule, RouterLink, RouterOutlet],
+    templateUrl: './app.component.html',
+    styleUrl: './app.component.css'
 })
 export class AppComponent {
   readonly auth = inject(AuthService);
