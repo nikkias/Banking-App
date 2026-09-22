@@ -36,34 +36,42 @@
         <span class="status"><i></i> Live</span>
       </div>
 
-      <ng-container *ngIf="accounts$ | async as accounts">
+      @if (accounts$ | async; as accounts) {
         <div class="summary-row">
           <div><span>Anzahl</span><strong>{{ accounts.length }}</strong></div>
           <div><span>Gesamtvolumen</span><strong>{{ accountsTotal(accounts) | currency:'EUR' }}</strong></div>
         </div>
-        <div class="account-list" *ngIf="accounts.length; else emptyState">
-          <a class="account-item" *ngFor="let account of accounts" [routerLink]="['/accounts', account.id]">
-            <div class="account-symbol">€</div>
-            <div class="account-details"><strong>{{ account.iban }}</strong><span>Konto-ID {{ account.id }}</span></div>
-            <strong class="balance">{{ account.balance | currency:'EUR' }}</strong>
-          </a>
-        </div>
-
-        <form class="transaction-form" [formGroup]="transactionForm" (ngSubmit)="submitTransaction()" *ngIf="accounts.length">
-          <select formControlName="accountId" aria-label="Konto auswählen">
-            <option value="">Konto auswählen</option>
-            <option *ngFor="let account of accounts" [value]="account.id">{{ account.iban }}</option>
-          </select>
-          <select formControlName="type" aria-label="Buchungsart">
-            <option value="deposit">Einzahlung</option>
-            <option value="withdraw">Auszahlung</option>
-          </select>
-          <input type="number" formControlName="amount" min="0.01" step="0.01" placeholder="Betrag" />
-          <input formControlName="description" placeholder="Beschreibung" />
-          <button type="submit" [disabled]="transactionLoading">Buchen</button>
-        </form>
-      </ng-container>
-      <ng-template #emptyState><p class="empty">Noch keine Konten vorhanden.</p></ng-template>
+        @if (accounts.length) {
+          <div class="account-list">
+            @for (account of accounts; track account) {
+              <a class="account-item" [routerLink]="['/accounts', account.id]">
+                <div class="account-symbol">€</div>
+                <div class="account-details"><strong>{{ account.iban }}</strong><span>Konto-ID {{ account.id }}</span></div>
+                <strong class="balance">{{ account.balance | currency:'EUR' }}</strong>
+              </a>
+            }
+          </div>
+        } @else {
+          <p class="empty">Noch keine Konten vorhanden.</p>
+        }
+        @if (accounts.length) {
+          <form class="transaction-form" [formGroup]="transactionForm" (ngSubmit)="submitTransaction()">
+            <select formControlName="accountId" aria-label="Konto auswählen">
+              <option value="">Konto auswählen</option>
+              @for (account of accounts; track account) {
+                <option [value]="account.id">{{ account.iban }}</option>
+              }
+            </select>
+            <select formControlName="type" aria-label="Buchungsart">
+              <option value="deposit">Einzahlung</option>
+              <option value="withdraw">Auszahlung</option>
+            </select>
+            <input type="number" formControlName="amount" min="0.01" step="0.01" placeholder="Betrag" />
+            <input formControlName="description" placeholder="Beschreibung" />
+            <button type="submit" [disabled]="transactionLoading">Buchen</button>
+          </form>
+        }
+      }
     </article>
 
     <article class="panel form-panel">
@@ -77,7 +85,9 @@
         <label>Startguthaben<input type="number" formControlName="openingBalance" min="0" step="0.01" /></label>
         <button type="submit" [disabled]="loading">{{ loading ? 'Wird angelegt ...' : 'Konto eröffnen' }}</button>
       </form>
-      <p class="feedback" *ngIf="feedback">{{ feedback }}</p>
+      @if (feedback) {
+        <p class="feedback">{{ feedback }}</p>
+      }
     </article>
   </section>
 </main>

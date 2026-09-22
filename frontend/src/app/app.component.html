@@ -1,38 +1,52 @@
-<main class="auth-shell" *ngIf="auth.session$ | async as session; else loginPanel">
-  <header class="topbar">
-    <div>
-      <strong>Bank24</strong>
-      <span>{{ session.username }} · {{ session.roles.join(', ') || 'authorized' }} · 24/7 Online</span>
-    </div>
-    <nav>
-      <a routerLink="/">Cockpit</a>
-      <a routerLink="/showcase">Showcase</a>
-      <a routerLink="/admin/audit" *ngIf="session.roles.includes('ADMIN')">Audit</a>
-      <a href="http://localhost:8080/swagger-ui/index.html" target="_blank" rel="noreferrer">API</a>
-    </nav>
-    <button type="button" (click)="logout()">Logout</button>
-  </header>
-  <router-outlet />
-</main>
+@if (isStaticPages) {
+  <app-executive-showcase />
+} @else {
+  @if (isPublicShowcase) {
+    <router-outlet />
+  } @else {
+    @if (auth.session$ | async; as session) {
+      <main class="auth-shell">
+        <header class="topbar">
+          <div>
+            <strong>Bank24</strong>
+            <span>{{ session.username }} · {{ session.roles.join(', ') || 'authorized' }} · 24/7 Online</span>
+          </div>
+          <nav>
+            <a routerLink="/">Cockpit</a>
+            <a routerLink="/showcase">Showcase</a>
+            @if (session.roles.includes('ADMIN')) {
+              <a routerLink="/admin/audit">Audit</a>
+            }
+            <a href="http://localhost:8080/swagger-ui/index.html" target="_blank" rel="noreferrer">API</a>
+          </nav>
+          <button type="button" (click)="logout()">Logout</button>
+        </header>
+        <router-outlet />
+      </main>
+    } @else {
+      <main class="login-shell">
+        <section class="login-copy">
+          <p class="eyebrow">BANK24 FINANCIAL SERVICES</p>
+          <h1>Operations-Plattform für Banking, Versicherung und Public Sector</h1>
+          <p>Ein Fullstack-MVP für Kontoführung, Rollen, Audit, Customer Journeys und integrationsfähige Finanzprozesse. Gebaut für eine ruhige, starke Präsentation vor Financial-Services-Teams.</p>
+          <div class="trust-row"><span>24/7</span><span>Audit-ready</span><span>Role-based</span><span>PMO-ready</span></div>
+        </section>
+        <form class="login-panel" [formGroup]="loginForm" (ngSubmit)="login()">
+          <div class="card-preview" aria-hidden="true"><span></span><strong>Bank24</strong><em>SECURE CHIP</em></div>
+          <p class="eyebrow">LOGIN</p>
+          <h2>Zugang öffnen</h2>
+          <p class="demo-copy">Demo: employee / employee123, customer / customer123, admin / admin123.</p>
+          <label>Benutzer<input formControlName="username" autocomplete="username" /></label>
+          <label>Passwort<input type="password" formControlName="password" autocomplete="current-password" /></label>
+          <button type="submit" [disabled]="loading">{{ loading ? 'Prüfe Zugang ...' : 'Einloggen' }}</button>
+          @if (feedback) {
+            <p class="feedback">{{ feedback }}</p>
+          }
+        </form>
+      </main>
+    }
+  }
+}
 
-<ng-template #loginPanel>
-  <main class="login-shell">
-    <section class="login-copy">
-      <p class="eyebrow">BANK24 FINANCIAL SERVICES</p>
-      <h1>Operations-Plattform für Banking, Versicherung und Public Sector</h1>
-      <p>Ein Fullstack-MVP für Kontoführung, Rollen, Audit, Customer Journeys und integrationsfähige Finanzprozesse. Gebaut für eine ruhige, starke Präsentation vor Financial-Services-Teams.</p>
-      <div class="trust-row"><span>24/7</span><span>Audit-ready</span><span>Role-based</span><span>PMO-ready</span></div>
-    </section>
 
-    <form class="login-panel" [formGroup]="loginForm" (ngSubmit)="login()">
-      <div class="card-preview" aria-hidden="true"><span></span><strong>Bank24</strong><em>SECURE CHIP</em></div>
-      <p class="eyebrow">LOGIN</p>
-      <h2>Zugang öffnen</h2>
-      <p class="demo-copy">Demo: employee / employee123, customer / customer123, admin / admin123.</p>
-      <label>Benutzer<input formControlName="username" autocomplete="username" /></label>
-      <label>Passwort<input type="password" formControlName="password" autocomplete="current-password" /></label>
-      <button type="submit" [disabled]="loading">{{ loading ? 'Prüfe Zugang ...' : 'Einloggen' }}</button>
-      <p class="feedback" *ngIf="feedback">{{ feedback }}</p>
-    </form>
-  </main>
-</ng-template>
+

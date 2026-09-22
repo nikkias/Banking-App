@@ -85,3 +85,7 @@ Bank24 demonstriert eine moderne Financial-Services-Plattform. Ein Mitarbeiter k
 ## Präsentationssatz
 
 > Ich habe nicht nur eine Konto-App gebaut, sondern ein kleines Financial-Services-Operations-Produkt mit Architektur, Security, Audit, Deployment-Plan und einer Roadmap, die zu Banking, Versicherung, Public Sector und Systemintegration passt.
+
+## Persönliche Delivery-Story
+
+Die Showcase-Seite verbindet das Produkt mit einer Delivery-Perspektive: Scrum Master/Product Owner Zertifizierungen, Customer Journey, Business- und Anforderungsanalyse, SAP-/Systemintegration, BPMN/Prozessoptimierung, PMO, Projektleitung und KPI-/Stakeholder-Management. Das macht sichtbar, dass die Lösung nicht nur programmiert, sondern fachlich geführt, strukturiert und anschlussfähig gedacht wird.

@@ -17,11 +17,13 @@
   </section>
 
   <section class="capability-board">
-    <article *ngFor="let capability of capabilities">
-      <span></span>
-      <strong>{{ capability.label }}</strong>
-      <p>{{ capability.text }}</p>
-    </article>
+    @for (capability of capabilities; track capability) {
+      <article>
+        <span></span>
+        <strong>{{ capability.label }}</strong>
+        <p>{{ capability.text }}</p>
+      </article>
+    }
   </section>
 
   <section class="proof-grid">
@@ -34,9 +36,20 @@
     <article class="proof-card">
       <p class="eyebrow">PROOF POINTS</p>
       <div class="proof-list">
-        <span *ngFor="let proof of proofPoints">{{ proof }}</span>
+        @for (proof of proofPoints; track proof) {
+          <span>{{ proof }}</span>
+        }
       </div>
     </article>
+  </section>
+
+  <section class="readiness-board" aria-label="MVP readiness modules">
+    @for (pillar of readinessPillars; track pillar) {
+      <article>
+        <div><span>{{ pillar.metric }}</span><strong>{{ pillar.label }}</strong></div>
+        <p>{{ pillar.text }}</p>
+      </article>
+    }
   </section>
 
   <section class="journey-strip">
@@ -45,5 +58,18 @@
     <div><strong>03</strong><span>Geld bewegen</span></div>
     <div><strong>04</strong><span>Audit prüfen</span></div>
     <div><strong>05</strong><span>API erklären</span></div>
+  </section>
+
+  <section class="delivery-section">
+    <div>
+      <p class="eyebrow">DELIVERY CAPABILITY</p>
+      <h2>Produktdenken trifft Umsetzung</h2>
+      <p>Die Plattform ist nicht nur eine UI-Demo. Sie verbindet fachliche Prozesse, technische Architektur, Governance und eine nachvollziehbare Delivery-Disziplin.</p>
+    </div>
+    <div class="discipline-list">
+      @for (discipline of deliveryDisciplines; track discipline) {
+        <span>{{ discipline }}</span>
+      }
+    </div>
   </section>
 </main>

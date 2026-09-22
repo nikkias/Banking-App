@@ -1,4 +1,4 @@
-import { AsyncPipe, CurrencyPipe, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe, CurrencyPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -6,11 +6,11 @@ import { BehaviorSubject, catchError, finalize, of, switchMap, tap } from 'rxjs'
 import { AccountService } from './account.service';
 
 @Component({
-  selector: 'app-account-list',
+    selector: 'app-account-list',
   standalone: true,
-  imports: [AsyncPipe, CurrencyPipe, NgFor, NgIf, ReactiveFormsModule, RouterLink],
-  templateUrl: './account-list.component.html',
-  styleUrl: './account-list.component.css'
+    imports: [AsyncPipe, CurrencyPipe, ReactiveFormsModule, RouterLink],
+    templateUrl: './account-list.component.html',
+    styleUrl: './account-list.component.css'
 })
 export class AccountListComponent {
   private readonly formBuilder = inject(FormBuilder);

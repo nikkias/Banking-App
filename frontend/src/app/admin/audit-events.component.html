@@ -14,31 +14,36 @@
     </aside>
   </header>
 
-  <ng-container *ngIf="events$ | async as events">
+  @if (events$ | async; as events) {
     <section class="kpi-row">
       <article><span>Events</span><strong>{{ events.length }}</strong></article>
       <article><span>Outcome</span><strong>SUCCESS</strong></article>
       <article><span>Scope</span><strong>Banking</strong></article>
     </section>
+    @if (events.length) {
+      <section class="audit-list">
+        @for (event of events; track event) {
+          <article class="audit-item" [class]="eventTone(event.action)">
+            <div class="event-icon">{{ event.action.charAt(0) }}</div>
+            <div class="event-main">
+              <div class="event-heading"><strong>{{ event.action }}</strong><span>{{ event.outcome }}</span></div>
+              <p>{{ event.description }}</p>
+              <small>{{ event.actor }} · {{ event.resourceType }} · {{ event.resourceId }}</small>
+            </div>
+            <div class="event-side">
+              @if (event.amount !== null) {
+                <strong>{{ event.amount | currency:'EUR' }}</strong>
+              } @else {
+                <strong>Governance</strong>
+              }
+              <span>{{ event.timestamp | date:'dd.MM.yyyy HH:mm' }}</span>
+            </div>
+          </article>
+        }
+      </section>
+    } @else {
+      <section class="empty-panel"><h2>Noch keine Audit-Events</h2><p>Führe Kontoaktionen aus und lade diese Seite erneut.</p></section>
+    }
+  }
 
-    <section class="audit-list" *ngIf="events.length; else emptyAudit">
-      <article class="audit-item" *ngFor="let event of events" [class]="eventTone(event.action)">
-        <div class="event-icon">{{ event.action.charAt(0) }}</div>
-        <div class="event-main">
-          <div class="event-heading"><strong>{{ event.action }}</strong><span>{{ event.outcome }}</span></div>
-          <p>{{ event.description }}</p>
-          <small>{{ event.actor }} · {{ event.resourceType }} · {{ event.resourceId }}</small>
-        </div>
-        <div class="event-side">
-          <strong *ngIf="event.amount !== null; else noAmount">{{ event.amount | currency:'EUR' }}</strong>
-          <ng-template #noAmount><strong>Governance</strong></ng-template>
-          <span>{{ event.timestamp | date:'dd.MM.yyyy HH:mm' }}</span>
-        </div>
-      </article>
-    </section>
-  </ng-container>
-
-  <ng-template #emptyAudit>
-    <section class="empty-panel"><h2>Noch keine Audit-Events</h2><p>Führe Kontoaktionen aus und lade diese Seite erneut.</p></section>
-  </ng-template>
 </main>

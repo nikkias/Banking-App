@@ -21,7 +21,7 @@ management:
 spring:
   config:
     activate:
-      on-profile: memory
+      "on-profile": memory
   autoconfigure:
     exclude:
       - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
@@ -32,7 +32,7 @@ spring:
 spring:
   config:
     activate:
-      on-profile: postgres
+      "on-profile": postgres
   datasource:
     url: jdbc:postgresql://localhost:5432/bank_platform
     username: bank
@@ -44,5 +44,5 @@ spring:
       ddl-auto: validate
     properties:
       hibernate:
-        format_sql: true
+        "[format_sql]": true
 

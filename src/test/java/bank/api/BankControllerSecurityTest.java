@@ -13,8 +13,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.RequestPostProcessor;
 
-import java.util.Objects;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -23,7 +21,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles({"memory", "test"})
-@SuppressWarnings("null")
 class BankControllerSecurityTest {
     @Autowired
     private MockMvc mockMvc;
@@ -105,10 +102,10 @@ class BankControllerSecurityTest {
     }
 
     private MediaType jsonMediaType() {
-        return Objects.requireNonNull(MediaType.APPLICATION_JSON, "APPLICATION_JSON");
+        return MediaType.APPLICATION_JSON;
     }
 
     private RequestPostProcessor employeeUser() {
-        return Objects.requireNonNull(SecurityMockMvcRequestPostProcessors.user("employee").roles("EMPLOYEE"), "employeeUser");
+        return SecurityMockMvcRequestPostProcessors.user("employee").roles("EMPLOYEE");
     }
 }
