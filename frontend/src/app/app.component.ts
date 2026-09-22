@@ -18,6 +18,7 @@ export class AppComponent {
   private readonly formBuilder = inject(FormBuilder);
   readonly isPublicShowcase = window.location.pathname.endsWith('/showcase');
   readonly isStaticPages = window.location.hostname.endsWith('github.io')
+    || window.location.pathname.startsWith('/bank-platform')
     || window.location.pathname.startsWith('/Banking-App');
 
   readonly loginForm = this.formBuilder.nonNullable.group({

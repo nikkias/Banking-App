@@ -1,8 +1,8 @@
 name: Deploy Angular to GitHub Pages
 
 on:
-  push:
-    branches: [main]
+  # GitHub-hosted runners are disabled in this Enterprise repository.
+  # Enable runners or configure a self-hosted runner before running this workflow.
   workflow_dispatch:
 
 permissions:

@@ -15,7 +15,7 @@ It builds the Angular frontend and deploys it to GitHub Pages on every push to `
 1. Open the repository:
 
 ```text
-https://github.com/nikkias/Banking-App
+https://github.com/Nikita-Vavrin_msgcp/bank-platform
 ```
 
 2. Open `Settings`.
@@ -26,7 +26,35 @@ https://github.com/nikkias/Banking-App
 Expected URL:
 
 ```text
-https://nikkias.github.io/Banking-App/
+https://Nikita-Vavrin_msgcp.github.io/bank-platform/
+```
+
+## Enterprise Runner Limitation
+
+If the workflow fails with this message, the repository is not allowed to use GitHub-hosted runners:
+
+```text
+GitHub Actions hosted runners are disabled for this repository.
+```
+
+This is an organization or enterprise setting, not an application build problem. You have three practical options:
+
+1. Ask the GitHub Enterprise administrator to enable GitHub-hosted runners for this repository.
+2. Configure a self-hosted runner and change the workflow runner label from `ubuntu-latest` to the self-hosted label.
+3. Build the Angular site locally and deploy it manually to Azure Static Web Apps, Azure Storage Static Website, or another static host.
+
+Local static build:
+
+```powershell
+cd frontend
+npm ci
+npm run build -- --base-href /bank-platform/
+```
+
+Static output:
+
+```text
+frontend/dist/bank-platform-frontend/browser
 ```
 
 ## Important Scope
