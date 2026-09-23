@@ -1,8 +1,8 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { Account, AccountTransaction, AuditEvent, Customer } from './account.models';
+import { Account, AccountTransaction, AuditEvent, Customer, TransactionPage } from './account.models';
 
 @Injectable({ providedIn: 'root' })
 export class AccountService {
@@ -19,6 +19,34 @@ export class AccountService {
 
   getTransactions(accountId: string): Observable<AccountTransaction[]> {
     return this.http.get<AccountTransaction[]>(`${this.apiUrl}/accounts/${accountId}/transactions`);
+  }
+
+  getTransactionPage(
+    accountId: string,
+    page: number,
+    size: number,
+    filters: { type: string; query: string; from: string; to: string }
+  ): Observable<TransactionPage> {
+    let params = new HttpParams().set('page', page).set('size', size);
+    if (filters.type !== 'ALL') {
+      params = params.set('type', filters.type);
+    }
+    if (filters.query.trim()) {
+      params = params.set('query', filters.query.trim());
+    }
+    if (filters.from) {
+      params = params.set('from', `${filters.from}T00:00:00Z`);
+    }
+    if (filters.to) {
+      params = params.set('to', `${filters.to}T23:59:59.999Z`);
+    }
+    return this.http.get<TransactionPage>(`${this.apiUrl}/accounts/${accountId}/transactions/page`, {
+      params
+    });
+  }
+
+  recordTransactionExport(accountId: string, format: 'CSV' | 'PDF', filterSummary: string): Observable<void> {
+    return this.http.post<void>(`${this.apiUrl}/accounts/${accountId}/transaction-exports`, { format, filterSummary });
   }
 
   getAuditEvents(): Observable<AuditEvent[]> {

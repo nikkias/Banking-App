@@ -39,6 +39,8 @@
 
 ## Repository-Regeln
 
+- Das Root-POM koordiniert JVM-Module; das Spring-Boot-Modul liegt ausschließlich in `backend/`.
+- `backend/` und `frontend/` haben getrennte Build-, Test- und Docker-Kontexte.
 - Domain hat keine Spring-Imports.
 - Controller enthalten keine Geschäftslogik.
 - Services kennen Ports, nicht konkrete Datenbankklassen.
@@ -52,15 +54,14 @@
 ### Packages
 
 ```text
-bank.api
-bank.config
-bank.domain
-bank.service
-bank.service.port
-bank.infrastructure.memory
-bank.infrastructure.jpa       später
-bank.security                  später
-bank.audit                     später
+backend/src/main/java/bank/
+  api
+  config
+  domain
+  service
+  service/port
+  infrastructure/memory
+  infrastructure/jpa
 ```
 
 ### Naming

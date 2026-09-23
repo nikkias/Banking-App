@@ -55,6 +55,8 @@ Ab Persistenzmodul:
 - Konto bleibt nach Repository-Neuladen erhalten
 - Optimistic Locking verhindert parallele Saldo-Fehler
 
+Aktuell deckt `PostgresBankIntegrationTest` den vollständigen PostgreSQL-Pfad ab: Flyway-Migrationen, aufeinanderfolgende Geldbewegungen, Transaktionshistorie und Audit-Events. Der Test benötigt Docker sowie Maven und soll in der CI ausgeführt werden.
+
 ## Frontend Tests
 
 ### Component Tests

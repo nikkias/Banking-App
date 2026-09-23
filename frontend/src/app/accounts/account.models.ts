@@ -20,6 +20,13 @@ export interface AccountTransaction {
   description: string;
 }
 
+export interface TransactionPage {
+  content: AccountTransaction[];
+  page: number;
+  size: number;
+  totalElements: number;
+}
+
 export interface AuditEvent {
   id: string;
   actor: string;

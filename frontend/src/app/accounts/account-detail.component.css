@@ -19,6 +19,14 @@ input, select { width: 100%; min-width: 0; padding: 13px 14px; border: 1px solid
 button { padding: 14px; border: 0; border-radius: 4px; background: #9b1025; color: #fff7f4; font: inherit; font-weight: 900; cursor: pointer; }
 button:disabled { opacity: .55; cursor: wait; }
 .feedback { margin: 18px 0 0; font-size: 13px; font-weight: 800; }
+.transaction-filters { grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(0, 1fr)); gap: 10px; margin: 0 0 16px; }
+.history-panel label { color: #ffd9d0; }
+.history-panel input, .history-panel select { border-color: rgba(255,255,255,.3); background: rgba(255,255,255,.96); }
+.history-actions { display: flex; justify-content: flex-end; gap: 10px; margin: 0 0 12px; }
+.history-actions button { padding: 10px 12px; font-size: 13px; }
+.secondary-action { background: transparent !important; border: 1px solid rgba(255,255,255,.4) !important; }
+.transaction-pagination { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 18px; color: #ffd9d0; font-size: 13px; font-weight: 800; }
+.transaction-pagination button { padding: 9px 12px; font-size: 13px; }
 .transaction-list { display: grid; gap: 4px; }
 .transaction-item { display: grid; grid-template-columns: 36px minmax(0, 1fr) auto; align-items: center; gap: 14px; padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,.1); }
 .transaction-badge { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,.12); color: #f6c45f; font-weight: 900; }
@@ -27,5 +35,6 @@ button:disabled { opacity: .55; cursor: wait; }
 .transaction-item span, .empty { color: #ffd9d0; }
 .transaction-item > strong { color: #ffb3a8; white-space: nowrap; }
 .transaction-item > strong.positive { color: #f6c45f; }
-@media (max-width: 860px) { .account-hero { align-items: start; flex-direction: column; } .balance-card { min-width: 0; width: 100%; } .balance-card strong { white-space: normal; } .detail-grid { grid-template-columns: 1fr; } }
-@media (max-width: 620px) { .detail-shell { padding: 30px 18px 60px; } .account-hero, .panel { padding: 22px; } .transaction-item { align-items: start; flex-direction: column; } }
+@media (max-width: 860px) { .account-hero { align-items: start; flex-direction: column; } .balance-card { min-width: 0; width: 100%; } .balance-card strong { white-space: normal; } .detail-grid, .transaction-filters { grid-template-columns: 1fr; } }
+@media (max-width: 620px) { .detail-shell { padding: 30px 18px 60px; } .account-hero, .panel { padding: 22px; } .transaction-item { align-items: start; flex-direction: column; } .history-actions { align-items: stretch; flex-direction: column; } .transaction-pagination { align-items: stretch; flex-direction: column; text-align: center; } }
+@media print { .back-link, .transfer-panel, .transaction-filters, .history-actions { display: none !important; } .detail-shell { max-width: none; padding: 0; } .account-hero, .panel { border: 0; box-shadow: none; } .detail-grid { display: block; } .history-panel { color: #000; background: #fff; } .history-panel h2, .transaction-item strong { color: #000; } .transaction-item span { color: #333; } }

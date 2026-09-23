@@ -1,4 +1,8 @@
 node_modules
 dist
+.angular
+.git
+*.lognode_modules
+dist
 .git
 *.log

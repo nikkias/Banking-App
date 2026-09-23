@@ -1,7 +1,7 @@
-target
-.git
-.github
-.vscode
-frontend/node_modules
-frontend/dist
+backend/target
+frontend/
+docs/
+.git/
+.github/
+.vscode/
 *.log

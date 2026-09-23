@@ -46,7 +46,26 @@
             <h2>Transaktionen</h2>
           </div>
         </div>
-        @if (transactions$ | async; as transactions) {
+        <form class="transaction-filters" [formGroup]="transactionFilterForm">
+          <label>Suche<input type="search" formControlName="query" placeholder="Beschreibung oder Typ" /></label>
+          <label>Typ
+            <select formControlName="type">
+              <option value="ALL">Alle Buchungen</option>
+              <option value="DEPOSIT">Einzahlung</option>
+              <option value="WITHDRAWAL">Auszahlung</option>
+              <option value="TRANSFER_IN">Überweisung erhalten</option>
+              <option value="TRANSFER_OUT">Überweisung gesendet</option>
+            </select>
+          </label>
+          <label>Von<input type="date" formControlName="from" /></label>
+          <label>Bis<input type="date" formControlName="to" /></label>
+        </form>
+        @if (transactionPage$ | async; as transactionPage) {
+          @if (transactions$ | async; as transactions) {
+          <div class="history-actions">
+            <button type="button" (click)="exportCsv(account, transactions)" [disabled]="!transactions.length || exportLoading">CSV exportieren</button>
+            <button type="button" class="secondary-action" (click)="printStatement(account)" [disabled]="exportLoading">Drucken / PDF</button>
+          </div>
           @if (transactions.length) {
             <div class="transaction-list">
               @for (transaction of transactions; track transaction) {
@@ -64,6 +83,12 @@
             </div>
           } @else {
             <p class="empty">Noch keine Transaktionen vorhanden.</p>
+          }
+          <nav class="transaction-pagination" aria-label="Seitennavigation für Transaktionen">
+            <button type="button" class="secondary-action" (click)="previousTransactionPage(transactionPage.page)" [disabled]="transactionPage.page === 0">Neuere</button>
+            <span>Seite {{ transactionPage.page + 1 }} von {{ Math.max(1, Math.ceil(transactionPage.totalElements / transactionPage.size)) }}</span>
+            <button type="button" class="secondary-action" (click)="nextTransactionPage(transactionPage.page, transactionPage.totalElements)" [disabled]="(transactionPage.page + 1) * transactionPage.size >= transactionPage.totalElements">Ältere</button>
+          </nav>
           }
         }
       </article>

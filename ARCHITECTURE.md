@@ -8,14 +8,21 @@ Das Projekt ist als modularer Monolith aufgebaut. Backend und Frontend sind getr
 frontend/                         Angular UI
   src/app/accounts/               Konto-Feature
 
-src/main/java/bank/
-  config/                         technische Spring-Konfiguration
-  api/                            REST-Controller und DTOs
-  service/                        Anwendungsfälle und Transaktionen
-  service/port/                   Repository-Ports für austauschbare Infrastruktur
-  domain/                         Fachobjekte und Geschäftsregeln
-  infrastructure/memory/           schneller lokaler Adapter im Profil `memory`
-  infrastructure/jpa/              PostgreSQL-Adapter im Profil `postgres`
+backend/                          Spring Boot service module
+  src/main/java/bank/
+    config/                       technische Spring-Konfiguration
+    api/                          REST-Controller und DTOs
+    service/                      Anwendungsfälle und Transaktionen
+    service/port/                 Repository-Ports für austauschbare Infrastruktur
+    domain/                       Fachobjekte und Geschäftsregeln
+    infrastructure/memory/        schneller lokaler Adapter im Profil `memory`
+    infrastructure/jpa/           PostgreSQL-Adapter im Profil `postgres`
+  src/main/resources/             Konfiguration und Flyway-Migrationen
+  src/test/java/                  Unit-, Security- und PostgreSQL-Integrationstests
+
+pom.xml                           Maven-Reaktor für JVM-Module
+docker-compose.yml                lokale Plattform-Orchestrierung
+docs/                             Architektur-, Betriebs- und Produktdokumentation
 ```
 
 ### Abhängigkeitsrichtung
@@ -43,6 +50,13 @@ Die Domäne kennt weder Spring noch HTTP. Der Service orchestriert Geschäftspro
 - Eigentümerprüfung: `CUSTOMER` sieht und nutzt nur eigene Konten
 - OIDC/JWT Resource-Server-Profil für produktionsnahe Authentifizierung
 - Container-Deployment für Backend, Frontend und PostgreSQL vorbereitet
+- CI-Workflow für Maven-Verifikation, Angular-Production-Build und Container-Build
+- Transaktionssuche, Typ-/Datumsfilter, CSV-Export und druckbarer Kontoauszug
+- CSV- und PDF-Export werden als `TRANSACTION_EXPORT` mit Nutzer, Konto, Format und Filterkontext auditiert
+- Konfigurierbares Tageslimit für ausgehende Zahlungen über `BANK_DAILY_DEBIT_LIMIT`
+- Prometheus-Metriken unter `/actuator/prometheus` und strukturierte JSON-Logs
+- Durchgängige Korrelations-ID über `X-Correlation-Id` in Response-Headern, Fehlerantworten und strukturierten Logs
+- Browser-Schutz durch Content-Security-Policy, Frame-Schutz, Referrer- und Permissions-Policy
 
 ## API-Module
 
@@ -54,9 +68,14 @@ POST /api/accounts/{accountId}/deposit
 POST /api/accounts/{accountId}/withdraw
 POST /api/transfers
 GET  /api/accounts/{accountId}/transactions
+GET  /api/accounts/{accountId}/transactions/page?page=0&size=50
 ```
 
 Fehler werden als RFC-7807-ähnliche `ProblemDetail`-Antworten geliefert. Ungültige Eingaben erzeugen `400 Bad Request`, fachliche Konflikte wie zu niedriger Kontostand erzeugen `409 Conflict`.
+
+Die paginierte Transaktionsschnittstelle begrenzt Antworten auf maximal 100 Einträge. Sie liefert `content`, `page`, `size` und `totalElements`; die Eigentümerprüfung gilt unverändert auch für paginierte Abfragen.
+Sie akzeptiert optional `type`, `query`, `from` und `to`; Datumswerte sind UTC-ISO-8601-Instants. Ergebnisse werden stabil nach `timestamp DESC, id DESC` sortiert, damit Seiten bei gleicher Buchungszeit nachvollziehbar bleiben.
+Das Angular-Kontodetail lädt 25 Buchungen je Seite und sendet Suche, Typ und Zeitraum als serverseitige Filter über den gesamten Kontoverlauf. CSV-Export und PDF-Druck beziehen sich auf die aktuell geladene, serverseitig gefilterte Seite; ein späterer Reporting-Release ergänzt vollständige asynchrone Export-Jobs.
 
 ## Entwicklungs­module
 
@@ -113,13 +132,29 @@ Fehler werden als RFC-7807-ähnliche `ProblemDetail`-Antworten geliefert. Ungül
 
 ## Nächste beste Ausbaureihenfolge
 
-1. Keycloak/Azure-Entra-Demo-Konfiguration für das `oidc`-Profil ergänzen.
-2. Audit-Log im PostgreSQL-Profil in der Demo verifizieren.
-3. OpenAPI/Swagger für die REST-API erzeugen.
-4. Backend und Frontend in Docker Compose ergänzen.
-5. CSV-Export und Tageslimits ergänzen.
+1. Keycloak/Azure-Entra-Demo-Konfiguration für das `oidc`-Profil ergänzen und Basic Auth außerhalb lokaler Demos entfernen.
+2. CI auf einen freigegebenen GitHub-hosted oder self-hosted Runner aktivieren, damit Maven, Testcontainers, Angular-Build und Container-Build als Pull-Request-Gate laufen.
+3. Mandantenmodell `Organization -> Customer -> Account` mit tenant-scoped Repositories, Rollen und Datenmigration einführen.
+4. Währungen, Locale, Zeitzonen und regulatorische Anforderungen als internationales Domänenmodell ergänzen.
+5. Managed PostgreSQL, Secret Manager, HTTPS/WAF, Backups, Alerting und Disaster-Recovery-Tests für den Produktivbetrieb einrichten.
 
 Die detaillierte Umsetzungsreihenfolge steht in [docs/IMPLEMENTATION_BACKLOG.md](docs/IMPLEMENTATION_BACKLOG.md). Architekturentscheidungen stehen in [docs/TECHNICAL_DECISIONS.md](docs/TECHNICAL_DECISIONS.md).
+
+## Enterprise-Grenzen
+
+Das Projekt ist ein sicherer, containerisierter Banking-MVP mit geprüften Fachregeln und vorbereiteten Produktionsschnittstellen. Ein internationaler Multi-Company-Produktivbetrieb benötigt jedoch Infrastruktur- und Governance-Entscheidungen, die nicht sicher als lokale Code-Defaults simuliert werden können: einen echten Identity Provider, eine Tenant- und Datenresidenzstrategie, lokale Compliance-Vorgaben, verwaltete Secrets, Monitoring-/Alerting-Ziele sowie Recovery-Ziele. Diese Entscheidungen werden vor der Datenmodell-Migration und dem Go-Live verbindlich festgelegt.
+
+## Observability-Vertrag
+
+Clients dürfen eine sichere Korrelations-ID über `X-Correlation-Id` senden. Die Plattform übernimmt gültige Werte, erzeugt andernfalls eine ID und liefert sie immer im Response-Header zurück. RFC-7807-Fehlerantworten enthalten zusätzlich das Feld `correlationId`. Damit lassen sich Support-Fälle, Audit-Untersuchungen und spätere OpenTelemetry-Traces eindeutig über Browser, API und Log-Aggregation verbinden.
+
+## Browser-Sicherheitsvertrag
+
+Nginx schützt die Angular-Anwendung mit einer restriktiven Content-Security-Policy. Frontend und API verweigern Einbettung in fremde Frames, blockieren unsichere MIME-Interpretation, minimieren Referrer-Daten und deaktivieren nicht benötigte Browser-Funktionen wie Kamera, Standort, Mikrofon und Payment APIs.
+
+## Export- und Compliance-Vertrag
+
+Vor einem CSV-Download oder PDF-Druck erfasst das Frontend einen autorisierten Export-Event über die API. Die Eigentümerprüfung entspricht der Kontohistorie; ein Audit-Event enthält den Akteur, das Konto, das Format und eine begrenzte Zusammenfassung der gewählten Filter. Dadurch bleiben Datenweitergaben für Revision und Kundenservice nachvollziehbar.
 
 ## Teststrategie
 
@@ -134,14 +169,14 @@ Die detaillierte Umsetzungsreihenfolge steht in [docs/IMPLEMENTATION_BACKLOG.md]
 Backend (nach Installation von Maven):
 
 ```text
-mvn spring-boot:run
+mvn --projects backend spring-boot:run
 ```
 
 Backend mit PostgreSQL:
 
 ```text
 docker compose up -d postgres
-mvn spring-boot:run -Dspring-boot.run.profiles=postgres
+mvn --projects backend spring-boot:run -Dspring-boot.run.profiles=postgres
 ```
 
 Frontend (nach Installation von Node.js):

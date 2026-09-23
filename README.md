@@ -26,13 +26,18 @@ Eine moderne Bankkonto-Verwaltung für Privatkunden und Bankmitarbeiter: Konten 
 ## Projektstruktur
 
 ```text
-src/main/java/bank/
+backend/src/main/java/bank/
   api/                  REST API und DTOs
   config/               technische Spring-Konfiguration
   domain/               Fachmodell und Geschäftsregeln
   service/              Use Cases
   service/port/         Repository-Ports
   infrastructure/       Adapter, aktuell In-Memory
+
+backend/src/main/resources/
+  db/migration/         Flyway-Datenbankschema
+
+backend/src/test/java/  Backend- und PostgreSQL-Integrationstests
 
 frontend/src/app/
   accounts/             Angular Konto-Feature
@@ -61,21 +66,21 @@ Die Anwendung läuft lokal mit dem `memory`-Profil. Für den Demo-Login kann ein
 Backend:
 
 ```powershell
-mvn spring-boot:run
+mvn --projects backend spring-boot:run
 ```
 
 Backend mit PostgreSQL:
 
 ```powershell
 docker compose up -d postgres
-mvn spring-boot:run -Dspring-boot.run.profiles=postgres
+mvn --projects backend spring-boot:run -Dspring-boot.run.profiles=postgres
 ```
 
 Backend mit OIDC/JWT Resource Server:
 
 ```powershell
 $env:OIDC_ISSUER_URI = "http://localhost:8081/realms/bank-platform"
-mvn spring-boot:run -Dspring-boot.run.profiles=memory,oidc
+mvn --projects backend spring-boot:run -Dspring-boot.run.profiles=memory,oidc
 ```
 
 Für OIDC/JWT muss ein echter Identity Provider laufen, zum Beispiel Keycloak, Azure Entra ID oder Auth0. Tokens müssen Rollen als `roles`-Claim mit Werten wie `CUSTOMER`, `EMPLOYEE` oder `ADMIN` enthalten.
@@ -98,15 +103,35 @@ Swagger:  http://localhost:8080/swagger-ui/index.html
 
 Das Standardprofil ist `memory`, damit die App ohne Datenbank sofort startet. Für dauerhafte Daten nutze das Profil `postgres`.
 
+### Docker-Stack
+
+```powershell
+docker compose up --build
+```
+
+Der Container-Stack verwendet standardmäßig `http://localhost:4200`. Läuft dort bereits `npm start`, wähle einen anderen Host-Port:
+
+```powershell
+$env:FRONTEND_PORT = "4201"
+docker compose up --build
+```
+
+Der Backend-Health-Check ist unter `http://localhost:8080/actuator/health`, Prometheus unter `http://localhost:8080/actuator/prometheus` erreichbar.
+Der Backend-CORS-Vertrag akzeptiert lokale Browser-Clients auf den Ports `4200` und `4201`.
+
+Für Support und Fehleranalyse kann jede API-Anfrage eine Korrelations-ID senden. Die API gibt sie als `X-Correlation-Id` zurück und fügt sie Fehlerantworten als `correlationId` hinzu.
+
 ## Demo-Logins
 
 ```text
 employee / employee123   Kontoeröffnung und Buchungen
-customer / customer123   Konten lesen und Überweisungen ausführen
+anna     / anna123       Privatkunden-Portfolio mit Gehalt und Kartenzahlung
+maxim    / maxim123      Privatkunden-Portfolio mit Sparrücklage
+clara    / clara123      Privatkunden-Portfolio mit Versicherungsbeitrag
 admin    / admin123      Admin-Rechte und Audit-Log
 ```
 
-Wenn ein Mitarbeiter ein Konto für den Demo-Kunden anlegt, muss `ownerUsername` auf `customer` gesetzt werden. Danach sieht der Login `customer` nur dieses eigene Konto.
+Jeder Demo-Kunde besitzt ein getrenntes Konto. Wenn ein Mitarbeiter ein Konto für eine neue Person anlegt, muss `ownerUsername` dem jeweiligen Login entsprechen. Ein Login mit der Rolle `CUSTOMER` sieht ausschließlich die eigenen Konten.
 
 Für lokale Demos nutzt die App Basic Auth. Für produktionsnahe Umgebungen ist das Profil `oidc` vorbereitet und erwartet JWTs von einem Identity Provider.
 
@@ -130,7 +155,7 @@ Für lokale Demos nutzt die App Basic Auth. Für produktionsnahe Umgebungen ist 
 
 - [render.yaml](render.yaml)
 - [docker-compose.yml](docker-compose.yml)
-- [Dockerfile](Dockerfile)
+- [backend/Dockerfile](backend/Dockerfile)
 - [frontend/Dockerfile](frontend/Dockerfile)
 - [frontend/nginx.conf](frontend/nginx.conf)
 

@@ -3,6 +3,7 @@ services:
     name: bank-platform-backend
     env: docker
     plan: free
+    rootDir: backend
     dockerfilePath: ./Dockerfile
     healthCheckPath: /actuator/health
     envVars:
