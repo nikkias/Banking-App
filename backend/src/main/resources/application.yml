@@ -1,0 +1,58 @@
+spring:
+  application:
+    name: bank-platform-backend
+  profiles:
+    default: memory
+  jpa:
+    open-in-view: false
+server:
+  port: 8080
+bank:
+  limits:
+    daily-debit: ${BANK_DAILY_DEBIT_LIMIT:10000.00}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  endpoint:
+    health:
+      probes:
+        enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}
+logging:
+  structured:
+    format:
+      console: logstash
+
+---
+spring:
+  config:
+    activate:
+      "on-profile": memory
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+      - org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
+      - org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration
+
+---
+spring:
+  config:
+    activate:
+      "on-profile": postgres
+  datasource:
+    url: jdbc:postgresql://localhost:5432/bank_platform
+    username: bank
+    password: bank
+  flyway:
+    enabled: true
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        "[format_sql]": true
+
