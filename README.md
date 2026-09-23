@@ -40,6 +40,24 @@ frontend/src/app/
 
 ## Start
 
+### Für Kollegen freigeben
+
+Repository:
+
+```text
+https://github.com/Nikita-Vavrin_msgcp/bank-platform
+```
+
+Lokale Demo:
+
+```text
+Frontend: http://localhost:4200/
+Backend:  http://localhost:8080
+Swagger:  http://localhost:8080/swagger-ui/index.html
+```
+
+Die Anwendung läuft lokal mit dem `memory`-Profil. Für den Demo-Login kann ein Kollege `employee / employee123` verwenden. GitHub Pages und Azure Static Web Apps hosten nur das Angular-Frontend; für echte Online-Buchungen muss das Backend zusätzlich öffentlich deployt werden. In der aktuellen Enterprise-Umgebung sind GitHub-hosted Actions Runner deaktiviert, deshalb bleibt der lokale Start der verlässliche Demoweg.
+
 Backend:
 
 ```powershell
